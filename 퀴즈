@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>생태 & 환경 퀴즈</title>
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: linear-gradient(to right, #a8e6cf, #dcedc1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .quiz-container {
+            background-color: #fff;
+            width: 90%;
+            max-width: 600px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            padding: 30px;
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .question {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .options button {
+            padding: 12px;
+            font-size: 1em;
+            border: none;
+            border-radius: 10px;
+            background-color: #a8dadc;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .options button:hover {
+            background-color: #457b9d;
+            color: #fff;
+        }
+        .score {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #333;
+        }
+        .restart-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1em;
+            border: none;
+            border-radius: 10px;
+            background-color: #f4a261;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .restart-btn:hover {
+            background-color: #e76f51;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>생태 & 환경 퀴즈</h1>
+        <div class="question" id="question"></div>
+        <div class="options" id="options"></div>
+        <div class="score" id="score"></div>
+        <button class="restart-btn" id="restartBtn" style="display:none;">다시 시작</button>
+    </div>
+
+    <script>
+        const quizData = [
+            { q: "1. 지구온난화의 주된 원인은 무엇인가?", a: ["이산화탄소 증가", "오존층 파괴", "자외선 증가", "화산 폭발"], correct: 0 },
+            { q: "2. 생물다양성이 중요한 이유는?", a: ["생태계 안정", "물 부족", "온도 상승", "바람 증가"], correct: 0 },
+            { q: "3. 재활용이 가장 효과적인 자원은?", a: ["플라스틱", "유리", "종이", "철"], correct: 3 },
+            { q: "4. 사막화는 주로 어떤 지역에서 발생하는가?", a: ["건조 지역", "열대우림", "극지방", "습지"], correct: 0 },
+            { q: "5. 산성비의 주 원인은?", a: ["황산화물과 질소산화물", "이산화탄소", "메탄", "산소"], correct: 0 },
+            { q: "6. 해양 쓰레기 문제의 주범은?", a: ["플라스틱", "유류", "유리", "종이"], correct: 0 },
+            { q: "7. 오존층 파괴 주범 물질은?", a: ["CFC", "CO2", "NOx", "SO2"], correct: 0 },
+            { q: "8. 지속 가능한 에너지에 속하지 않는 것은?", a: ["석탄", "태양광", "풍력", "수력"], correct: 0 },
+            { q: "9. 멸종위기종 보호의 주된 이유는?", a: ["생태계 균형 유지", "농업 생산성", "지구 온도 상승", "자원 개발"], correct: 0 },
+            { q: "10. 탄소 발자국을 줄이는 방법으로 옳은 것은?", a: ["대중교통 이용", "자동차 배기량 늘리기", "플라스틱 사용 늘리기", "산림 파괴"], correct: 0 }
+        ];
+
+        let current = 0;
+        let score = 0;
+
+        const questionEl = document.getElementById('question');
+        const optionsEl = document.getElementById('options');
+        const scoreEl = document.getElementById('score');
+        const restartBtn = document.getElementById('restartBtn');
+
+        function loadQuiz() {
+            if(current >= quizData.length) {
+                questionEl.innerHTML = "퀴즈 종료!";
+                optionsEl.innerHTML = "";
+                scoreEl.innerHTML = `당신의 점수: ${score} / ${quizData.length}`;
+                restartBtn.style.display = "block";
+                return;
+            }
+            const q = quizData[current];
+            questionEl.innerHTML = q.q;
+            optionsEl.innerHTML = '';
+            q.a.forEach((option, i) => {
+                const btn = document.createElement('button');
+                btn.innerText = option;
+                btn.onclick = () => selectOption(i);
+                optionsEl.appendChild(btn);
+            });
+        }
+
+        function selectOption(index) {
+            if(index === quizData[current].correct) score++;
+            current++;
+            loadQuiz();
+        }
+
+        restartBtn.addEventListener('click', () => {
+            current = 0;
+            score = 0;
+            scoreEl.innerHTML = "";
+            restartBtn.style.display = "none";
+            loadQuiz();
+        });
+
+        loadQuiz();
+    </script>
+</body>
+</html>
